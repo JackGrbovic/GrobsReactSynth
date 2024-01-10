@@ -1,0 +1,27 @@
+const keys = new Map();
+keys.set("KeyQ", 'c1');
+keys.set("Digit2", 'cs1');
+keys.set("KeyW", 'd1');
+keys.set("Digit3", 'eb1');
+keys.set("KeyE", 'e1');
+keys.set("KeyR", 'f1');
+keys.set("Digit5", 'fs1');
+keys.set("KeyT", 'g1');
+keys.set("Digit6", 'gs1');
+keys.set("KeyY", 'a1');
+keys.set("Digit7", 'bb1');
+keys.set("KeyU", 'b1');
+keys.set("KeyZ", 'c');
+keys.set("KeyS", 'cs');
+keys.set("KeyX", 'd');
+keys.set("KeyD", 'eb');
+keys.set("KeyC", 'e');
+keys.set("KeyV", 'f');
+keys.set("KeyG", 'fs');
+keys.set("KeyB", 'g');
+keys.set("KeyH", 'gs');
+keys.set("KeyN", 'a');
+keys.set("KeyJ", 'bb');
+keys.set("KeyM", 'b');
+
+export default keys;
