@@ -24,34 +24,4 @@ keycodes.set(21, "KeyN");
 keycodes.set(22, "KeyJ");
 keycodes.set(23, "KeyM");
 
-//digit4 does not exist, we need to revise our keyboard layout and map accordingly
-
-
-// ([
-//     "KeyQ",
-//     "Digit2",
-//     "KeyW",
-//     "Digit3",
-//     "KeyE",
-//     "KeyR",
-//     "Digit4",
-//     "KeyT",
-//     "Digit6",
-//     "KeyY",
-//     "Digit7",
-//     "KeyU",
-//     "KeyZ",
-//     "KeyS",
-//     "KeyX",
-//     "KeyD",
-//     "KeyC",
-//     "KeyV",
-//     "KeyF",
-//     "KeyB",
-//     "KeyH",
-//     "KeyN",
-//     "KeyJ",
-//     "KeyM"
-// ]
-
 export default keycodes;

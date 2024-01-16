@@ -1,8 +1,7 @@
 import frequencies from "../data/frequencies";
 
-//need to configure the parameters again so they are not indexes of our useState, but we pass in the whole useState and then access the required index
-export default function Sound(key, waveform1, waveform2, waveform3, waveform4, oscillator1Sliders, oscillator2Sliders, modulator1Sliders, modulator2Sliders, envelopeSliders, globalAudioContext){
-    const frequency = frequencies.get(key);
+export default function Sound(note, waveform1, waveform2, waveform3, waveform4, oscillator1Sliders, oscillator2Sliders, modulator1Sliders, modulator2Sliders, envelopeSliders, globalAudioContext){
+    const frequency = frequencies.get(note);
     this.frequency = frequency;
 
     //CARRIER 1
@@ -46,18 +45,19 @@ export default function Sound(key, waveform1, waveform2, waveform3, waveform4, o
     this.noteGain = new GainNode(globalAudioContext);
     let now = globalAudioContext.currentTime;
     this.noteGain.gain.setValueAtTime(0, now);
-    if (this.attackTime > 0){
-        // console.log("Attack time: " + this.attackTime);
-        this.noteGain.gain.linearRampToValueAtTime(1, now + this.attackTime);
+    if (this.attackTime > 0 && this.decayTime === 0){
+        this.noteGain.gain.setTargetAtTime(1, now, this.attackTime);
+    }
+    else if (this.decayTime > 0 && this.attackTime === 0){
+        this.noteGain.gain.setValueAtTime(1, now);
+        this.noteGain.gain.setTargetAtTime(this.sustainLevel, now, this.decayTime);
+    }
+    else if (this.attackTime > 0 && this.decayTime > 0){
+        this.noteGain.gain.setTargetAtTime(1, now, this.attackTime);
+        setTimeout(() => {this.noteGain.gain.setTargetAtTime(this.sustainLevel, now, this.decayTime); }, (this.attackTime * 1000));
     }
     else{
         this.noteGain.gain.setValueAtTime(1, now);
-    }
-
-    if (this.decayTime > 0){
-        // console.log("Decay time: " + this.decayTime);
-        // console.log("Sustain level: " + this.sustainLevel);
-        this.noteGain.gain.linearRampToValueAtTime(this.sustainLevel, now + this.decayTime);
     }
 
     //PRIMARY GAIN

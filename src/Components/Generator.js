@@ -24,7 +24,7 @@ export default function Generator({
           </p>
         </div>
           <p className={"sliderlabel"}>
-            Volume: {sliders[index][0]}
+            {generatorType === "oscillator" ? "Volume:" : "Depth:"} {sliders[index][0]}
           </p>
           <input
             type={"range"}
@@ -35,7 +35,7 @@ export default function Generator({
             onChange={(e) => {handleChangeSlider(index, 0, e.target.value)}}
           />
           <p className={"sliderlabel"}>
-            Octave: {sliders[index][1]}
+            {generatorType === "oscillator" ? "Octave:" : "Frequency:"} {sliders[index][1]}
           </p>
           <input
             type={"range"}

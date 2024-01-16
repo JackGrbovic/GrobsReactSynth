@@ -1,4 +1,4 @@
-const validateKeyboardKeycodes = [
+const validKeyboardKeycodes = [
     "KeyQ",
     "Digit2",
     "KeyW",
@@ -25,4 +25,4 @@ const validateKeyboardKeycodes = [
     "KeyM"
 ]
 
-export default validateKeyboardKeycodes;
+export default validKeyboardKeycodes;

@@ -1,7 +1,8 @@
-export function handleSetKeyState(keyState, setKeyState, keycode, value){
-    let newKeyState = {...keyState};
-    newKeyState[keycode] = value;
-    setKeyState(newKeyState);
+export function handleSetKeyboardState(keyboardState, setKeyboardState, keycode, value){
+    let newKeyboardState = {...keyboardState};
+    newKeyboardState[keycode] = value;
+    setKeyboardState(newKeyboardState);
+    console.log(keyboardState[keycode]);
 }
 
 export function whiteOrBlackKey(note){
