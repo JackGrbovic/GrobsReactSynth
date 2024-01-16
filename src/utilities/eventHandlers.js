@@ -1,32 +1,28 @@
 import { removeElementsFromArrayByProperty } from "./generalUtilities";
-import { handleSetKeyState } from "./keyboardUtilities";
+import { handleSetKeyboardState } from "./keyboardUtilities";
 
-export function handleKeyUp(e, synth, keyState, setKeyState, heldKeys){
-    let isKeycodeValid = validateKeyboardKeycode(e.code, keyState);
+export function handleKeyUp(e, synth, keyboardState, setKeyboardState, heldKeys){
+    let isKeycodeValid = validateKeyboardKeycode(e.code, keyboardState);
     if (isKeycodeValid){
-        handleSetKeyState(keyState, setKeyState, e.code, false);
+        handleSetKeyboardState(keyboardState, setKeyboardState, e.code, false);
         synth.eventStop(e.code, true);
         heldKeys = removeElementsFromArrayByProperty(heldKeys, "code", e.code)
     }
 }
 
-//we need to remove heldKeys from the equation here. This will mean ensuring that synthesizer relies on keyState to start and end its sounds
-export function handleKeyDown(e, synth, generatorSliders, waveforms, envelopeSliders, keyState, setKeyState, heldKeys){
-    let isKeycodeValid = validateKeyboardKeycode(e.code, keyState);
-    let componentKeyState = keyState[e.code];
+export function handleKeyDown(e, synth, generatorSliders, waveforms, envelopeSliders, keyboardState, setKeyboardState, heldKeys){
+    let isKeycodeValid = validateKeyboardKeycode(e.code, keyboardState);
+    let componentKeyState = keyboardState[e.code];
   
     if (e.repeat || isKeycodeValid === false || componentKeyState === undefined || componentKeyState === true){
-        console.log("Returning");
         return;
     }
     else{
-        handleSetKeyState(keyState, setKeyState, e.code, true);
-        synth.eventStart(e, true, generatorSliders, waveforms, envelopeSliders);
+        handleSetKeyboardState(keyboardState, setKeyboardState, e.code, true);
+        synth.eventStart(e, true, generatorSliders, waveforms, envelopeSliders, keyboardState);
         heldKeys.push(e);
     }
 }
-
-
 
 function validateKeyboardKeycode(keycodeToValidate, keyboardState){
     const keysOfKeyboardState = Object.entries(keyboardState);

@@ -28,9 +28,9 @@ export default function Tutorial(){
                         {"\n"}
                         {"\n"}
                         If you're new to sound design, I recommend that you play around with the waveforms, volumes and frequencies of the first 
-                        two oscillators to begin with, and just the attack and release on the envelope. If you add just release you can sculpt
-                        resonant pluck sounds, if you add just attack you can conjure abruptly ending electronic sounds, and a healthy balance
-                        of the two can make classic pad sounds, which are great for playing chords.
+                        two oscillators to begin with, and just the attack and release on the envelope. If you add just release with a short decay 
+                        you can sculpt resonant pluck sounds, if you add just attack you can conjure abruptly ending electronic sounds, and a healthy 
+                        balance of the two can make classic pad sounds, which are great for playing chords.
                     </p>
                 </div>
             </div>

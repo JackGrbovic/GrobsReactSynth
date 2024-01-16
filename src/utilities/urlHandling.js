@@ -91,8 +91,6 @@ export function buildNewUrl(waveforms, generatorSliders, envelopeSliders){
 
     let urlToReturn = new URL(urlRoot);
 
-    //probably need to add searchparams to url
-
     return urlToReturn;
 }
 

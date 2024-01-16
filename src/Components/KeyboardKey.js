@@ -14,8 +14,6 @@ export default function KeyboardKey({marginTop, currentStateOfKey, xAxisPosition
         else if (className === "whitekeypresseddown" && currentStateOfKey === false) classNameToReturn = "whitekey";
         else if (className === "blackkeypresseddown" && currentStateOfKey === false) classNameToReturn = "blackkey";
 
-        console.log(className);
-        console.log(classNameToReturn);
         className = classNameToReturn;
         return classNameToReturn;
     }

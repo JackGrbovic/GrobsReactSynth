@@ -3,12 +3,13 @@ import frequencies from '../data/frequencies.js';
 import Sound from './Sound.js';
 import { removeElementsFromArrayByProperty } from '../utilities/generalUtilities.js';
 
-let globalAudioContext = new AudioContext;
+
+let globalAudioContext = new AudioContext();
 
 let activeSounds = [];
 
 export default function Synthesizer(){
-    this.playSound = playSound;
+    this.playSoundWithInterruptableAttack = playSound;
     this.stopSound = stopSound;
     this.stopGenerators = stopGenerators;
     this.removeElementsFromArrayByProperty = removeElementsFromArrayByProperty;
@@ -17,9 +18,11 @@ export default function Synthesizer(){
     this.activeSounds = activeSounds;
 }
 
-//need to figure out how to not fully play attack if keyt is let go before it is reached
-function playSound(key, generatorSliders, waveforms, envelopeSliders){
-    let sound = new Sound(key, waveforms[0], waveforms[1], waveforms[2], waveforms[3], generatorSliders[0], generatorSliders[1], generatorSliders[2], generatorSliders[3], envelopeSliders, globalAudioContext);
+function playSound(keycode, generatorSliders, waveforms, envelopeSliders, keyboardState){
+    let note = keys.get(keycode);
+    console.log(keyboardState[keycode])
+
+    let sound = new Sound(note, waveforms[0], waveforms[1], waveforms[2], waveforms[3], generatorSliders[0], generatorSliders[1], generatorSliders[2], generatorSliders[3], envelopeSliders, globalAudioContext);
 
     //CONNECT AND START
     sound.carrier.start();
@@ -30,10 +33,9 @@ function playSound(key, generatorSliders, waveforms, envelopeSliders){
     activeSounds.push(sound);
 }
 
-
 function stopSound(note){
     let frequency = frequencies.get(note);
-    let soundToEnd = new Object();
+    let soundToEnd = {};
     let soundCounter = 0;
 
     for (let sound of activeSounds){
@@ -52,19 +54,19 @@ function stopSound(note){
         }
     }
 
-    if(soundToEnd.releaseTime > 0){
-        soundToEnd.noteGain.gain.linearRampToValueAtTime(0.0000000001, globalAudioContext.currentTime + (soundToEnd.releaseTime / 10));
-        //may need to refactor the below line to an arrow function with a callback because this looks wacky
-        setTimeout(function(){stopGenerators(soundToEnd); }, (soundToEnd.releaseTime * 100));
+    if (soundToEnd.releaseTime > 0){
+        console.log(soundToEnd.releaseTime);
+        soundToEnd.noteGain.gain.setTargetAtTime(0, globalAudioContext.currentTime, (soundToEnd.releaseTime / 10));
+        setTimeout(() => {stopGenerators(soundToEnd); }, (soundToEnd.releaseTime * 200));
         activeSounds = removeElementsFromArrayByProperty(activeSounds, "frequency", frequency);
     }
-    else if(soundToEnd.releaseTime === 0){
-        stopGenerators(soundToEnd);
+    else{
+        console.log(soundToEnd.releaseTime);
+        soundToEnd.primaryGain.gain.setTargetAtTime(0, globalAudioContext.currentTime, 0.015);
+        setTimeout(() => {stopGenerators(soundToEnd); }, 15);
         activeSounds = removeElementsFromArrayByProperty(activeSounds, "frequency", frequency);
     }
-    else return;
 }
-
 
 function stopGenerators(soundToEnd){
     soundToEnd.modulatorOsc1.stop();
@@ -73,25 +75,19 @@ function stopGenerators(soundToEnd){
     soundToEnd.carrier2.stop();
 }
 
-
-function eventStart(e, isKeyboardButton, generatorSliders, waveforms, envelopeSliders){
+async function eventStart(e, isKeyboardButton, generatorSliders, waveforms, envelopeSliders, keyboardState){
     if (isKeyboardButton){
-        let note = keys.get(e.code);
-        playSound(note, generatorSliders, waveforms, envelopeSliders);
+        await playSound(e.code, generatorSliders, waveforms, envelopeSliders, keyboardState);
     }
 }
 
-
 function eventStop(keycode, isKeyboardButton){
     if(isKeyboardButton){
-
         var note = keys.get(keycode);
         stopSound(note);
     }
 }
 
-
-function activeSoundsAboveZero(activeSounds){
-    if (activeSounds > 0) return activeSounds.length - 1;
-    return 0;
+async function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
